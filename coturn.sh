@@ -31,6 +31,14 @@ for ip in $LISTEN_IPS; do
 	ARGS+=" -L $ip"
 done
 
+if [ -z "$EXTERNAL_IPS" ]; then
+	EXTERNAL_IPS="$(curl -4 https://icanhazip.com 2>/dev/null)"
+fi
+
+if [ -z "$EXTERNAL_IPS" ]; then
+	EXTERNAL_IPS="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+fi
+
 for ip in $EXTERNAL_IPS; do
 	ARGS+=" -X $ip"
 done
